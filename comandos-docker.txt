@@ -1,6 +1,9 @@
-#rodar postgres na versao 18.6.alpine
-docker run --name librarydb -p 5432:5432 -e POSTGRES_PASSWORD=postgres -e POSTGRES_USER=postgres -e POSTGRES_DB=library  postgres:18.6-alpine
+#ceate network library-network para fazer a conexão entre o postgres e o pgadmin4
+    docker network create library-network
 
-#rodar pgadmin4
-    docker run --name pgadmin4 -p 15432:80 -e PGADMIN_DEFAULT_EMAIL=admin@admin.com -e PGADMIN_DEFAULT_PASSWORD=admin dpage/pgadmin4
+#rodar postgres na versao 18.6.alpineb com network
+    docker run --name librarydb -p 5432:5432 -e POSTGRES_PASSWORD=postgres -e POSTGRES_USER=postgres -e POSTGRES_DB=library --network library-network -d postgres:18.6-alpine
+
+#rodar pgadmin4 com network do librarydb
+    docker run --name pgadmin4 -p 15432:80 -e PGADMIN_DEFAULT_EMAIL=admin@admin.com -e PGADMIN_DEFAULT_PASSWORD=admin --network library-network -d dpage/pgadmin4
 
