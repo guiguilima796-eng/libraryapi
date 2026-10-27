@@ -51,4 +51,46 @@ public class AutorRepositoryTest {
         System.out.println("Autor não encontrado para atualização.");
 
     }
+    @Test
+    public void listarTest(){
+        var autores = autorRepository.findAll();
+
+        autores.forEach(autor -> {
+            System.out.println("Autor: " + autor.getId() + " - " + autor.getNome());
+        });
+    }
+
+    @Test
+    public void cointTest(){
+        var count = autorRepository.count();
+
+        System.out.println("Total de autores: " + count);
+    }
+
+    @Test
+    public void deletByIdTest(){
+        var id = UUID.fromString("7a56c9d6-d957-483e-889a-812ef540548");
+        if (autorRepository.existsById(id)) {
+            autorRepository.deleteById(id);
+            System.out.println("Autor deletado com sucesso.");
+            return;
+            }
+
+
+        System.out.println("Autor não encontrado para deleção.");
+    }
+
+    @Test
+    public void deletByObjectTest(){
+        var id = UUID.fromString("15a584aa-c788-40dc-aa35-b34e88054598");
+        Optional<Autor> autorExistente = autorRepository.findById(id);
+
+        if (autorExistente.isPresent()) {
+            autorRepository.delete(autorExistente.get());
+            System.out.println("Autor deletado com sucesso.");
+            return;
+        }
+
+        System.out.println("Autor não encontrado para deleção.");
+    }
 }
