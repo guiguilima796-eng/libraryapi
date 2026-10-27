@@ -29,9 +29,31 @@ class LivroRepositoryTest {
         livro.setGenero(Genero.BIOGRAFIA);
         livro.setPreco(BigDecimal.valueOf(29.99));
 
-        Optional<Autor> autor = autorRepository.findById(UUID.fromString("430f56d4-40cf-4263-8c75-8888ee0315ac"));
+        Autor autor = autorRepository.findById(UUID.fromString("430f56d4-40cf-4263-8c75-8888ee0315ac")).orElse(null);
 
-        livro.setAutor(autor.get());
+        livro.setAutor(autor);
+
+        repository.save(livro);
+
+        System.out.println("Livro salvo: " + livro.getId() + " - " + livro.getTitulo());
+    }
+
+    @Test
+    void testSaveLivroCascade() {
+        // Implement your test logic here
+        Livro livro = new Livro();
+        livro.setTitulo("Test Book");
+        livro.setIsbn("1234567890");
+        livro.setData_publicacao(java.time.LocalDate.now());
+        livro.setGenero(Genero.BIOGRAFIA);
+        livro.setPreco(BigDecimal.valueOf(29.99));
+
+        Autor autor = new Autor();
+        autor.setNome("New Author");
+        autor.setNacionalidade("Unknown");
+        autor.setData_nascimento(java.time.LocalDate.of(1990, 1, 1));
+
+        livro.setAutor(autor);
 
         repository.save(livro);
 
